@@ -112,8 +112,8 @@ async function decodeAsync(compressedImageFrame, imageInfo) {
   ).toFixed(2)}:1`;
 
   const encodedImageInfo = {
-    columns: frameInfo.width || imageInfo.columns,
-    rows: frameInfo.height || imageInfo.rows,
+    columns: frameInfo.width,
+    rows: frameInfo.height,
     bitsPerPixel: frameInfo.bitsPerSample,
     signed: frameInfo.isSigned,
     bytesPerPixel: imageInfo.bytesPerPixel,
