@@ -17,9 +17,9 @@ const local = {
 export function initialize(decodeConfig) {
   local.decodeConfig = decodeConfig;
 
-  // if (local.codec) {
-  //   return Promise.resolve();
-  // }
+  if (local.codec) {
+    return Promise.resolve();
+  }
 
   const openJpegModule = openJpegFactory({
     locateFile: (f) => {
