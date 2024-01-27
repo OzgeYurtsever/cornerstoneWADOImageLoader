@@ -30,8 +30,8 @@ function uint8ArrayToString(data, offset, length) {
 }
 
 function getPixelData(uri, imageId, mediaType = 'application/octet-stream') {
-  console.log(' ---> getPixelData, wadors');
-  console.log(' ---> uri, imageId, mediaType ', uri, imageId, mediaType);
+  // console.log(' ---> getPixelData, wadors');
+  // console.log(' ---> uri, imageId, mediaType ', uri, imageId, mediaType);
 
   const headers = {
     Accept: mediaType,

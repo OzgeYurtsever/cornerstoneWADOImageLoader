@@ -24,7 +24,7 @@ function isLoaded(uri) {
 function get(uri) {
   let dataSet;
 
-  console.log(' +++++ Datasetcachemanager, uri:', uri);
+  // console.log(' +++++ Datasetcachemanager, uri:', uri);
 
   if (uri.includes('&frame=')) {
     const { frame, dataSet: multiframeDataSet } =
