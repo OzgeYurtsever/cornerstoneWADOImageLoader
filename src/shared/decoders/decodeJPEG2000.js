@@ -48,8 +48,8 @@ async function decodeAsync(compressedImageFrame, imageInfo) {
   // console.log('----> decoder');
   // console.log(decoder);
 
-  console.log('----> imageInfo');
-  console.log(imageInfo);
+  // console.log('----> imageInfo');
+  // console.log(imageInfo);
 
   // console.log('----> compressedImageFrame');
   // console.log(compressedImageFrame);
@@ -70,8 +70,8 @@ async function decodeAsync(compressedImageFrame, imageInfo) {
 
   // get information about the decoded image
   const frameInfo = decoder.getFrameInfo();
-  console.log('----> frameInfo');
-  console.log(frameInfo);
+  // console.log('----> frameInfo');
+  // console.log(frameInfo);
 
   // get the decoded pixels
   const decodedBufferInWASM = decoder.getDecodedBuffer();
