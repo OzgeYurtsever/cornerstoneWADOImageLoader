@@ -45,6 +45,15 @@ async function decodeAsync(compressedImageFrame, imageInfo) {
   await initialize();
   const decoder = local.decoder;
 
+  // console.log('----> decoder');
+  // console.log(decoder);
+
+  // console.log('----> imageInfo');
+  // console.log(imageInfo);
+
+  // console.log('----> compressedImageFrame');
+  // console.log(compressedImageFrame);
+
   // get pointer to the source/encoded bit stream buffer in WASM memory
   // that can hold the encoded bitstream
   const encodedBufferInWASM = decoder.getEncodedBuffer(
@@ -61,6 +70,9 @@ async function decodeAsync(compressedImageFrame, imageInfo) {
 
   // get information about the decoded image
   const frameInfo = decoder.getFrameInfo();
+  // console.log('----> frameInfo');
+  // console.log(frameInfo);
+
   // get the decoded pixels
   const decodedBufferInWASM = decoder.getDecodedBuffer();
   const imageFrame = new Uint8Array(decodedBufferInWASM.length);
@@ -79,6 +91,13 @@ async function decodeAsync(compressedImageFrame, imageInfo) {
   const blockDimensions = `${decoder.getBlockDimensions().width} x ${
     decoder.getBlockDimensions().height
   }`;
+
+  // console.log(' ---> tilesize width');
+  // console.log(decoder.getTileSize().width);
+  // console.log(' ---> tilesize height');
+  // console.log(decoder.getTileSize().height);
+
+  // const cols =
   const tileSize = `${decoder.getTileSize().width} x ${
     decoder.getTileSize().height
   }`;
