@@ -391,11 +391,21 @@ function createImage(imageId, pixelData, transferSyntax, options = {}) {
 
       // set the ww/wc to cover the dynamic range of the image if no values are supplied
       if (image.windowCenter === undefined || image.windowWidth === undefined) {
-        const maxVoi = image.maxPixelValue * image.slope + image.intercept;
-        const minVoi = image.minPixelValue * image.slope + image.intercept;
+        const oldMaxVoi = image.maxPixelValue * image.slope + image.intercept;
+        const oldMinVoi = image.minPixelValue * image.slope + image.intercept;
+        console.log(' ---> oldMaxVoi, oldMinVoi', oldMaxVoi, oldMinVoi);
+        console.log(' ---> old ww', oldMaxVoi - oldMinVoi);
+        console.log(' ---> old wc', (oldMaxVoi + oldMinVoi) / 2);
+
+        const maxVoi = getMinMax(imageFrame.pixelData).max;
+        const minVoi = getMinMax(imageFrame.pixelData).min;
+
+        console.log(' ---> maxVoi, minVoi', maxVoi, minVoi);
 
         image.windowWidth = maxVoi - minVoi;
         image.windowCenter = (maxVoi + minVoi) / 2;
+        console.log(' ---> new ww', image.windowWidth);
+        console.log(' ---> new wc', image.windowCenter);
       }
       resolve(image);
     }, reject);
