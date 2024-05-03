@@ -399,6 +399,9 @@ function createImage(imageId, pixelData, transferSyntax, options = {}) {
 
         const maxVoi = getMinMax(imageFrame.pixelData).max;
         const minVoi = getMinMax(imageFrame.pixelData).min;
+        // const minMax = getMinMax(imageFrame.pixelData);
+        // const maxVoi = minMax.max;
+        // const minVoi = minMax.min;
 
         console.log(' ---> maxVoi, minVoi', maxVoi, minVoi);
 
@@ -406,6 +409,7 @@ function createImage(imageId, pixelData, transferSyntax, options = {}) {
         image.windowCenter = (maxVoi + minVoi) / 2;
         console.log(' ---> new ww', image.windowWidth);
         console.log(' ---> new wc', image.windowCenter);
+
       }
       resolve(image);
     }, reject);
