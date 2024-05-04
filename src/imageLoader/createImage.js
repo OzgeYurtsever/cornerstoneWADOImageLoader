@@ -431,19 +431,21 @@ function createImage(imageId, pixelData, transferSyntax, options = {}) {
         const oldWindowWidth = maxVoi - minVoi;
         const oldWindowCenter = (maxVoi + minVoi) / 2;
 
-        const windowMin = (1 - Math.pow(width, 2)) * Math.max(minVoi, average - 2 * width * standardDeviation)
-          + Math.pow(width, 2) * minVoi;
-        const windowMax = (1 - Math.pow(width, 2)) * Math.min(maxVoi, average + 2 * width * standardDeviation)
-          + Math.pow(width, 2) * maxVoi;
-        image.windowCenter = 0.5 * (windowMin + windowMax);
-        image.windowWidth = windowMax - windowMin;
+        const max = Math.max(minVoi, average - 2 * width * standardDeviation);
+        const min = Math.min(maxVoi, average + 2 * width * standardDeviation);
+
+        const widthDiff = 1 - Math.pow(width, 2);
+        const wMin = widthDiff * max + Math.pow(width, 2) * minVoi;
+        const wMax = widthDiff * min + Math.pow(width, 2) * maxVoi;
+
+        image.windowCenter = 0.5 * (wMin + wMax);
+        image.windowWidth = wMax - wMin;
 
         console.log(' ---> old wc', oldWindowCenter);
         console.log(' ---> old ww', oldWindowWidth);
 
         console.log(' ---> new wc', image.windowCenter);
         console.log(' ---> new ww', image.windowWidth);
-
       }
       resolve(image);
     }, reject);
