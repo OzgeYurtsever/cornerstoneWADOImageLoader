@@ -4,6 +4,8 @@ import decodeImageFrame from './decodeImageFrame.js';
 import isColorImageFn from './isColorImage.js';
 import convertColorSpace from './convertColorSpace.js';
 import getMinMax from '../shared/getMinMax.js';
+import getStandardDeviation from '../shared/getStandardDeviation.js';
+import getAverage from '../shared/getAverage.js';
 import isJPEGBaseline8BitColor from './isJPEGBaseline8BitColor.js';
 import { getOptions } from './internal/options.js';
 import getScalingParameters from './getScalingParameters.js';
@@ -393,22 +395,54 @@ function createImage(imageId, pixelData, transferSyntax, options = {}) {
       if (image.windowCenter === undefined || image.windowWidth === undefined) {
         const oldMaxVoi = image.maxPixelValue * image.slope + image.intercept;
         const oldMinVoi = image.minPixelValue * image.slope + image.intercept;
-        console.log(' ---> oldMaxVoi, oldMinVoi', oldMaxVoi, oldMinVoi);
-        console.log(' ---> old ww', oldMaxVoi - oldMinVoi);
-        console.log(' ---> old wc', (oldMaxVoi + oldMinVoi) / 2);
+        // console.log(' ---> oldMaxVoi, oldMinVoi', oldMaxVoi, oldMinVoi);
+        // console.log(' ---> old ww', oldMaxVoi - oldMinVoi);
+        // console.log(' ---> old wc', (oldMaxVoi + oldMinVoi) / 2);
 
         const maxVoi = getMinMax(imageFrame.pixelData).max;
         const minVoi = getMinMax(imageFrame.pixelData).min;
         // const minMax = getMinMax(imageFrame.pixelData);
         // const maxVoi = minMax.max;
         // const minVoi = minMax.min;
+        const width = 0.5;
+        const average = getAverage(imageFrame.pixelData);
+        const standardDeviation = getStandardDeviation(imageFrame.pixelData);
 
         console.log(' ---> maxVoi, minVoi', maxVoi, minVoi);
 
+        /*
+
+          d_min = minimum value
+          d_max = maximum value
+          d_ave = average value
+          d_stdev = standard deviation
+          window_min=(1-sqr(width))*MAX(d_min, d_ave-2*width*d_stdev)+sqr(width)*d_min;
+          window_max=(1-sqr(width))*MIN(d_max, d_ave+2*width*d_stdev)+sqr(width)*d_max;
+          Window_Center=0.5f*(window_min+window_max);
+          Window_Width=window_max-window_min;
+
+        */
+
+        /*
         image.windowWidth = maxVoi - minVoi;
         image.windowCenter = (maxVoi + minVoi) / 2;
-        console.log(' ---> new ww', image.windowWidth);
+        */
+
+        const oldWindowWidth = maxVoi - minVoi;
+        const oldWindowCenter = (maxVoi + minVoi) / 2;
+
+        const windowMin = (1 - Math.pow(width, 2)) * Math.max(minVoi, average - 2 * width * standardDeviation)
+          + Math.pow(width, 2) * minVoi;
+        const windowMax = (1 - Math.pow(width, 2)) * Math.min(maxVoi, average + 2 * width * standardDeviation)
+          + Math.pow(width, 2) * maxVoi;
+        image.windowCenter = 0.5 * (windowMin + windowMax);
+        image.windowWidth = windowMax - windowMin;
+
+        console.log(' ---> old wc', oldWindowCenter);
+        console.log(' ---> old ww', oldWindowWidth);
+
         console.log(' ---> new wc', image.windowCenter);
+        console.log(' ---> new ww', image.windowWidth);
 
       }
       resolve(image);
