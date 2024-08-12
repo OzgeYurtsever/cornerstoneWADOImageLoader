@@ -15,6 +15,11 @@ function getStandardDeviation(storedPixelData) {
   console.log(' ----> arr', arr);
   console.log(' ====> stdev 1', Math.sqrt(arr.reduce((a, b) => a + b)));
   const standardDeviation = Math.sqrt(arr.reduce((a, b) => a + b) / numPixels);
+  storedPixelData.slice(0, 5).forEach((x) => {
+    console.log(' ---> x', x);
+    console.log(' ---> mean', mean);
+    console.log(' ---> result', Math.pow(x - mean, 2));
+  });
   return standardDeviation;
 }
 
