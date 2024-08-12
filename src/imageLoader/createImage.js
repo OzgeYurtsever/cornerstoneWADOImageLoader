@@ -392,12 +392,20 @@ function createImage(imageId, pixelData, transferSyntax, options = {}) {
       }
 
       // set the ww/wc to cover the dynamic range of the image if no values are supplied
+      console.log("image.windowCenter", image.windowCenter);
+      console.log("image.windowWidth", image.windowWidth);
       if (image.windowCenter === undefined || image.windowWidth === undefined) {
         const maxVoi = getMinMax(imageFrame.pixelData).max;
         const minVoi = getMinMax(imageFrame.pixelData).min;
         const width = 0.5;
         const average = getAverage(imageFrame.pixelData);
         const standardDeviation = getStandardDeviation(imageFrame.pixelData);
+
+        console.log(" --> maxVoi", maxVoi);
+        console.log(" --> minVoi", minVoi);
+        console.log(" --> width", width);
+        console.log(" --> average", average);
+        console.log(" --> standardDeviation", standardDeviation);
 
         /*
           d_min = minimum value
@@ -417,6 +425,7 @@ function createImage(imageId, pixelData, transferSyntax, options = {}) {
         const widthDiff = 1 - Math.pow(width, 2);
         const wMin = widthDiff * max + Math.pow(width, 2) * minVoi;
         const wMax = widthDiff * min + Math.pow(width, 2) * maxVoi;
+        console.log(" --> wMin wMax", wMin, wMax);
         image.windowCenter = 0.5 * (wMin + wMax);
         image.windowWidth = wMax - wMin;
       }
