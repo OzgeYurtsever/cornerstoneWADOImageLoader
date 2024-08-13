@@ -6,16 +6,17 @@
  */
 
 function getStandardDeviation(storedPixelData) {
-  const numPixels = storedPixelData.length;
+  const arr32 = Int32Array.from(storedPixelData);
+  const numPixels = arr32.length;
   console.log(' ---> numPixels', numPixels);
-  const mean1 = storedPixelData.reduce((acc, val) => acc + val, 0);
+  const mean1 = arr32.reduce((acc, val) => acc + val, 0);
   console.log(' ---> mean 1', mean1);
-  const mean = storedPixelData.reduce((acc, val) => acc + val, 0) / numPixels;
-  const arr = storedPixelData.map((x) => Math.pow(x - mean, 2));
+  const mean = arr32.reduce((acc, val) => acc + val, 0) / numPixels;
+  const arr = arr32.map((x) => Math.pow(x - mean, 2));
   console.log(' ----> arr', arr);
   console.log(' ====> stdev 1', Math.sqrt(arr.reduce((a, b) => a + b)));
   const standardDeviation = Math.sqrt(arr.reduce((a, b) => a + b) / numPixels);
-  storedPixelData.slice(0, 5).forEach((x) => {
+  arr32.slice(0, 5).forEach((x) => {
     console.log(' ---> x', x);
     console.log(' ---> mean', mean);
     console.log(' ---> result', Math.pow(x - mean, 2));
